@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/strike_budget_graph"
+    app:startDestination="@id/strikeBudgetLoadFragment">
+
+    <fragment
+        android:id="@+id/strikeBudgetLoadFragment"
+        android:name="com.strikes.busgapp.eiorfk.presentation.ui.load.StrikeBudgetLoadFragment"
+        android:label="StrikeBudgetLoadFragment" >
+        <action
+            android:id="@+id/action_strikeBudgetLoadFragment_to_strikeBudgetV"
+            app:destination="@id/strikeBudgetV"
+            app:popUpTo="@id/strike_budget_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/strikeBudgetV"
+        android:name="com.strikes.busgapp.eiorfk.presentation.ui.view.StrikeBudgetV"
+        android:label="StrikeBudgetV" />
+</navigation>
