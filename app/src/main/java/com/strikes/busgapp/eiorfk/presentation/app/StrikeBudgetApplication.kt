@@ -12,7 +12,6 @@ import com.appsflyer.deeplink.DeepLinkResult
 import com.strikes.busgapp.eiorfk.presentation.di.strikeBudgetModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -54,7 +53,7 @@ private const val STRIKE_BUDGET_LIN = "com.strikes.busgapp"
 class StrikeBudgetApplication : Application() {
 
     private var strikeBudgetIsResumed = false
-    private var strikeBudgetConversionTimeoutJob: Job? = null
+//    private var strikeBudgetConversionTimeoutJob: Job? = null
     private var strikeBudgetDeepLinkData: MutableMap<String, Any>? = null
 
     override fun onCreate() {
@@ -90,9 +89,8 @@ class StrikeBudgetApplication : Application() {
             STRIKE_BUDGET_APP_DEV,
             object : AppsFlyerConversionListener {
                 override fun onConversionDataSuccess(p0: MutableMap<String, Any>?) {
-                    strikeBudgetConversionTimeoutJob?.cancel()
+//                    strikeBudgetConversionTimeoutJob?.cancel()
                     Log.d(STRIKE_BUDGET_MAIN_TAG, "onConversionDataSuccess: $p0")
-
                     val afStatus = p0?.get("af_status")?.toString() ?: "null"
                     if (afStatus == "Organic") {
                         CoroutineScope(Dispatchers.IO).launch {
@@ -127,7 +125,7 @@ class StrikeBudgetApplication : Application() {
                 }
 
                 override fun onConversionDataFail(p0: String?) {
-                    strikeBudgetConversionTimeoutJob?.cancel()
+//                    strikeBudgetConversionTimeoutJob?.cancel()
                     Log.d(STRIKE_BUDGET_MAIN_TAG, "onConversionDataFail: $p0")
                     strikeBudgetResume(StrikeBudgetAppsFlyerState.StrikeBudgetError)
                 }
@@ -153,7 +151,7 @@ class StrikeBudgetApplication : Application() {
                 Log.d(STRIKE_BUDGET_MAIN_TAG, "AppsFlyer start error: $p0 - $p1")
             }
         })
-        strikeBudgetStartConversionTimeout()
+//        strikeBudgetStartConversionTimeout()
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@StrikeBudgetApplication)
@@ -192,18 +190,18 @@ class StrikeBudgetApplication : Application() {
         strikeBudgetDeepLinkData = map
     }
 
-    private fun strikeBudgetStartConversionTimeout() {
-        strikeBudgetConversionTimeoutJob = CoroutineScope(Dispatchers.Main).launch {
-            delay(30000)
-            if (!strikeBudgetIsResumed) {
-                Log.d(STRIKE_BUDGET_MAIN_TAG, "TIMEOUT: No conversion data received in 30s")
-                strikeBudgetResume(StrikeBudgetAppsFlyerState.StrikeBudgetError)
-            }
-        }
-    }
+//    private fun strikeBudgetStartConversionTimeout() {
+//        strikeBudgetConversionTimeoutJob = CoroutineScope(Dispatchers.Main).launch {
+//            delay(30000)
+//            if (!strikeBudgetIsResumed) {
+//                Log.d(STRIKE_BUDGET_MAIN_TAG, "TIMEOUT: No conversion data received in 30s")
+//                strikeBudgetResume(StrikeBudgetAppsFlyerState.StrikeBudgetError)
+//            }
+//        }
+//    }
 
     private fun strikeBudgetResume(state: StrikeBudgetAppsFlyerState) {
-        strikeBudgetConversionTimeoutJob?.cancel()
+//        strikeBudgetConversionTimeoutJob?.cancel()
         if (state is StrikeBudgetAppsFlyerState.StrikeBudgetSuccess) {
             val convData = state.strikeBudgetData ?: mutableMapOf()
             val deepData = strikeBudgetDeepLinkData ?: mutableMapOf()
